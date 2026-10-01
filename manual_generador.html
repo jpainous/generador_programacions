@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="titol">📖 Manual · Generador d'Eines Didàctiques</title>
+<style>
+:root{
+  --pri:#4b2e6f; --pri2:#5f3d8a; --oro:#b8912f; --crema:#faf8fc;
+  --tinta:#2a2530; --gris:#6b6570; --bord:#e0d8ea; --card:#fff;
+  --verd:#2e7d4f; --blau:#1f5f8b; --taronja:#c05621; --vermell:#a52834;
+  --codi-bg:#f4f1f8; --codi-txt:#5f3d8a;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.6}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;color:var(--pri)}
+h1{font-size:2.1em;margin:0 0 .3em}
+h2{font-size:1.5em;margin:2em 0 .6em;border-bottom:2px solid var(--bord);padding-bottom:.3em}
+h3{font-size:1.15em;margin:1.5em 0 .4em;color:var(--pri2)}
+h4{font-size:1em;margin:1.2em 0 .3em}
+p{margin:.6em 0}
+a{color:var(--pri2);text-decoration:none;border-bottom:1px dotted var(--pri2)}
+a:hover{border-bottom-style:solid}
+.topbar{position:sticky;top:0;z-index:50;background:var(--pri);color:#fff;padding:.7rem 1.2rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.topbar .brand{font-family:Georgia,serif;font-size:1.1rem;font-weight:bold}
+.topbar .brand small{opacity:.8;display:block;font-size:.72rem;font-weight:normal}
+.topbar .lang{margin-left:auto;display:flex;gap:.3rem}
+.topbar .lang button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;padding:.3rem .7rem;border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem}
+.topbar .lang button.on{background:#fff;color:var(--pri)}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;max-width:1200px;margin:1.5rem auto;padding:0 1.2rem}
+nav{position:sticky;top:80px;align-self:start;background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:1rem;max-height:calc(100vh - 110px);overflow:auto}
+nav .navtitle{display:block;padding:.3rem .5rem;color:var(--pri);font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+nav a{display:block;padding:.4rem .5rem;color:var(--tinta);text-decoration:none;border-radius:8px;font-size:.9rem;border:none}
+nav a:hover{background:#f1ecf7}
+nav a.on{background:var(--pri);color:#fff}
+nav .sub{padding-left:1.2rem;font-size:.85rem;opacity:.8}
+main{min-width:0}
+section.card{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:1.5rem 1.8rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+section.card > h2:first-child{margin-top:0}
+.box{border-radius:10px;padding:1rem 1.2rem;margin:1rem 0;font-size:.95em}
+.box.note{background:#fdf6e7;border-left:4px solid var(--oro)}
+.box.info{background:#e7f3ff;border-left:4px solid var(--blau)}
+.box.ok{background:#e7f0ea;border-left:4px solid var(--verd)}
+.box.warn{background:#fdeaea;border-left:4px solid var(--vermell)}
+.box .title{font-weight:700;display:block;margin-bottom:.3rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+th{background:var(--pri);color:#fff;text-align:left;padding:.55rem .7rem;font-weight:600}
+td{border:1px solid var(--bord);padding:.55rem .7rem;vertical-align:top}
+tbody tr:nth-child(even){background:#f9f6fc}
+td code, p code, li code{background:var(--codi-bg);color:var(--codi-txt);padding:.1rem .35rem;border-radius:4px;font-size:.88em;font-family:'Courier New',monospace}
+.step{display:grid;grid-template-columns:44px 1fr;gap:1rem;margin:1.4rem 0;align-items:start}
+.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pri) 0%,var(--pri2) 100%);color:#fff;font-weight:700;font-size:1.15rem;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(75,46,111,.3)}
+.step-body h3{margin-top:0}
+ul.check{list-style:none;padding-left:0}
+ul.check li{padding-left:1.7rem;position:relative;margin:.3rem 0}
+ul.check li::before{content:'✓';position:absolute;left:0;top:0;color:var(--verd);font-weight:bold;font-size:1.1em}
+.flow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;justify-content:center;padding:1.2rem;background:#f9f6fc;border-radius:12px;border:1px dashed var(--bord);margin:1rem 0}
+.flow .node{background:#fff;border:2px solid var(--pri);border-radius:10px;padding:.6rem 1rem;font-weight:600;font-size:.9rem;color:var(--pri);box-shadow:0 2px 6px rgba(0,0,0,.06);text-align:center}
+.flow .node.final{background:var(--pri);color:#fff}
+.flow .arrow{color:var(--pri);font-size:1.4rem;font-weight:bold}
+.flow .sub{display:block;font-size:.72rem;font-weight:normal;opacity:.7;margin-top:.15rem}
+pre{background:#f4f1f8;padding:1rem;border-radius:8px;overflow:auto;font-size:.88em;color:var(--codi-txt)}
+footer{text-align:center;padding:2rem 1rem;color:var(--gris);font-size:.88rem;border-top:1px solid var(--bord);margin-top:2rem}
+@media(max-width:900px){.layout{grid-template-columns:1fr}nav{position:static;max-height:none}.flow{flex-direction:column}.flow .arrow{transform:rotate(90deg)}}
+@media print{.topbar,nav,footer{display:none!important}.layout{display:block;max-width:none;margin:0;padding:0}section.card{border:none;box-shadow:none;page-break-inside:avoid;padding:.5rem 0}body{background:#fff}h2{page-break-after:avoid}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">📖 <span data-i18n="brand">Manual d'ús</span> <small data-i18n="brand_sub">Generador d'Eines Didàctiques</small></div>
+  <div class="lang" id="langBox">
+    <button type="button" data-lang="ca" class="on">CA</button>
+    <button type="button" data-lang="es">ES</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav id="nav">
+    <strong class="navtitle" data-i18n="nav_title">Índex</strong>
+    <a href="#intro" data-i18n="nav_intro">1. Què és</a>
+    <a href="#arxius" data-i18n="nav_arxius">2. Els 3 arxius</a>
+    <a href="#flux" data-i18n="nav_flux">3. Flux de treball</a>
+    <a href="#generador" data-i18n="nav_generador">4. El generador</a>
+    <a href="#generador" class="sub" data-i18n="nav_pas1">· Pas 1: Dades</a>
+    <a href="#generador" class="sub" data-i18n="nav_pas2">· Pas 2: Aparença</a>
+    <a href="#generador" class="sub" data-i18n="nav_pas3">· Pas 3: Sessions</a>
+    <a href="#generador" class="sub" data-i18n="nav_pas4">· Pas 4: Generar</a>
+    <a href="#programacio" data-i18n="nav_prog">5. Programació</a>
+    <a href="#planificador" data-i18n="nav_plan">6. Planificador</a>
+    <a href="#fitxa" data-i18n="nav_fitxa">7. Fitxa de l'alumne</a>
+    <a href="#idiomes" data-i18n="nav_idiomes">8. Canvi d'idioma</a>
+    <a href="#dades" data-i18n="nav_dades">9. On es guarden les dades</a>
+    <a href="#backup" data-i18n="nav_backup">10. Còpies de seguretat</a>
+    <a href="#consells" data-i18n="nav_consells">11. Consells</a>
+    <a href="#faq" data-i18n="nav_faq">12. Preguntes freqüents</a>
+  </nav>
+
+  <main>
+
+    <!-- 1. QUÈ ÉS -->
+    <section class="card" id="intro">
+      <h1 data-i18n="h1">📖 Manual d'ús</h1>
+      <p style="font-size:1.1em;color:var(--gris)" data-i18n="sub_h1">Generador d'Eines Didàctiques · Crea 3 eines HTML per a qualsevol assignatura</p>
+
+      <h2 data-i18n="s1_t">1. Què és</h2>
+      <p data-i18n="s1_p1"></p>
+
+      <div class="box info">
+        <span class="title" data-i18n="s1_box_title">🎯 Objectiu</span>
+        <span data-i18n="s1_box_txt"></span>
+      </div>
+
+      <h3 data-i18n="s1_req">Què necessites</h3>
+      <ul class="check">
+        <li data-i18n="s1_req1"></li>
+        <li data-i18n="s1_req2"></li>
+        <li data-i18n="s1_req3"></li>
+      </ul>
+
+      <div class="box note">
+        <span class="title" data-i18n="s1_note_title">💡 No calen coneixements tècnics</span>
+        <span data-i18n="s1_note_txt"></span>
+      </div>
+    </section>
+
+    <!-- 2. ELS 3 ARXIUS -->
+    <section class="card" id="arxius">
+      <h2 data-i18n="s2_t">2. Els 3 arxius que genera</h2>
+      <p data-i18n="s2_p1"></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="s2_th1">Fitxer</th>
+            <th data-i18n="s2_th2">Per a qui</th>
+            <th data-i18n="s2_th3">Què fa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>programacio_NOM.html</code></td>
+            <td data-i18n="s2_r1c2">Professorat</td>
+            <td data-i18n="s2_r1c3"></td>
+          </tr>
+          <tr>
+            <td><code>planificador_NOM.html</code></td>
+            <td data-i18n="s2_r2c2">Professorat</td>
+            <td data-i18n="s2_r2c3"></td>
+          </tr>
+          <tr>
+            <td><code>fitxa_alumne_NOM.html</code></td>
+            <td data-i18n="s2_r3c2">Alumnat</td>
+            <td data-i18n="s2_r3c3"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s2_box_title">🔗 Com es connecten</span>
+        <span data-i18n="s2_box_txt"></span>
+      </div>
+    </section>
+
+    <!-- 3. FLUX -->
+    <section class="card" id="flux">
+      <h2 data-i18n="s3_t">3. Flux de treball</h2>
+
+      <div class="flow">
+        <div class="node"><span data-i18n="s3_n1">Generador</span><span class="sub" data-i18n="s3_n1s">Omples dades</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span data-i18n="s3_n2">3 fitxers</span><span class="sub" data-i18n="s3_n2s">Es descarreguen</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><span data-i18n="s3_n3">Professor</span><span class="sub" data-i18n="s3_n3s">Omple programació + planificador</span></div>
+        <div class="arrow">→</div>
+        <div class="node final"><span data-i18n="s3_n4">Alumnat</span><span class="sub" data-i18n="s3_n4s">Importa fitxa i fa seguiment</span></div>
+      </div>
+
+      <h3 data-i18n="s3_det">En detall</h3>
+      <ol>
+        <li data-i18n="s3_l1"></li>
+        <li data-i18n="s3_l2"></li>
+        <li data-i18n="s3_l3"></li>
+        <li data-i18n="s3_l4"></li>
+        <li data-i18n="s3_l5"></li>
+        <li data-i18n="s3_l6"></li>
+        <li data-i18n="s3_l7"></li>
+      </ol>
+    </section>
+
+    <!-- 4. GENERADOR -->
+    <section class="card" id="generador">
+      <h2 data-i18n="s4_t">4. El generador pas a pas</h2>
+      <p data-i18n="s4_p1"></p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3 data-i18n="s4_p1t">Dades bàsiques</h3>
+          <p data-i18n="s4_p1p"></p>
+          <ul>
+            <li data-i18n="s4_p1l1"></li>
+            <li data-i18n="s4_p1l2"></li>
+            <li data-i18n="s4_p1l3"></li>
+            <li data-i18n="s4_p1l4"></li>
+          </ul>
+          <div class="box note">
+            <span class="title" data-i18n="s4_p1b_title">💡 Consell</span>
+            <span data-i18n="s4_p1b_txt"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3 data-i18n="s4_p2t">Aparença</h3>
+          <p data-i18n="s4_p2p"></p>
+          <ul>
+            <li data-i18n="s4_p2l1"></li>
+            <li data-i18n="s4_p2l2"></li>
+            <li data-i18n="s4_p2l3"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3><span data-i18n="s4_p3t">Sessions inicials</span> <span style="color:var(--gris);font-weight:normal;font-size:.85em" data-i18n="s4_p3opt">(opcional)</span></h3>
+          <p data-i18n="s4_p3p"></p>
+          <ul>
+            <li data-i18n="s4_p3l1"></li>
+            <li data-i18n="s4_p3l2"></li>
+          </ul>
+          <p data-i18n="s4_p3p2"></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3 data-i18n="s4_p4t">Generar</h3>
+          <p data-i18n="s4_p4p"></p>
+          <ul>
+            <li data-i18n="s4_p4l1"></li>
+            <li data-i18n="s4_p4l2"></li>
+          </ul>
+          <div class="box info">
+            <span class="title" data-i18n="s4_p4b_title">📁 On van els fitxers</span>
+            <span data-i18n="s4_p4b_txt"></span>
+          </div>
+        </div>
+      </div>
+
+      <h3 data-i18n="s4_aux">Botons auxiliars del generador</h3>
+      <table>
+        <thead><tr><th data-i18n="s4_aux_th1">Botó</th><th data-i18n="s4_aux_th2">Què fa</th></tr></thead>
+        <tbody>
+          <tr><td>💾 <span data-i18n="s4_aux_b1">Exportar config</span></td><td data-i18n="s4_aux_b1d"></td></tr>
+          <tr><td>📤 <span data-i18n="s4_aux_b2">Importar config</span></td><td data-i18n="s4_aux_b2d"></td></tr>
+          <tr><td>🗑️ <span data-i18n="s4_aux_b3">Netejar</span></td><td data-i18n="s4_aux_b3d"></td></tr>
+          <tr><td>🌐 <span data-i18n="s4_aux_b4">Selector d'idioma</span></td><td data-i18n="s4_aux_b4d"></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5. PROGRAMACIÓ -->
+    <section class="card" id="programacio">
+      <h2 data-i18n="s5_t">5. Programació didàctica</h2>
+      <p data-i18n="s5_p1"></p>
+      <ol>
+        <li data-i18n="s5_s1"></li>
+        <li data-i18n="s5_s2"></li>
+        <li data-i18n="s5_s3"></li>
+        <li data-i18n="s5_s4"></li>
+        <li data-i18n="s5_s5"></li>
+        <li data-i18n="s5_s6"></li>
+        <li data-i18n="s5_s7"></li>
+        <li data-i18n="s5_s8"></li>
+        <li data-i18n="s5_s9"></li>
+        <li data-i18n="s5_s10"></li>
+      </ol>
+
+      <h3 data-i18n="s5_edit">Com editar-la</h3>
+      <ul>
+        <li data-i18n="s5_e1"></li>
+        <li data-i18n="s5_e2"></li>
+        <li data-i18n="s5_e3"></li>
+        <li data-i18n="s5_e4"></li>
+        <li data-i18n="s5_e5"></li>
+      </ul>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s5_b_title">✏️ Guia visual</span>
+        <span data-i18n="s5_b_txt"></span>
+      </div>
+
+      <h3 data-i18n="s5_bt">Botons de la programació</h3>
+      <table>
+        <thead><tr><th data-i18n="s5_bt_th1">Botó</th><th data-i18n="s5_bt_th2">Què fa</th></tr></thead>
+        <tbody>
+          <tr><td>⬇ <span data-i18n="s5_bt_b1">Exporta</span></td><td data-i18n="s5_bt_b1d"></td></tr>
+          <tr><td>⬆ <span data-i18n="s5_bt_b2">Importa</span></td><td data-i18n="s5_bt_b2d"></td></tr>
+          <tr><td>↺ <span data-i18n="s5_bt_b3">Restaura</span></td><td data-i18n="s5_bt_b3d"></td></tr>
+          <tr><td>🖨 <span data-i18n="s5_bt_b4">Imprimeix</span></td><td data-i18n="s5_bt_b4d"></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. PLANIFICADOR -->
+    <section class="card" id="planificador">
+      <h2 data-i18n="s6_t">6. Planificador de sessions</h2>
+      <p data-i18n="s6_p1"></p>
+
+      <h3 data-i18n="s6_c">Què pot contenir cada sessió</h3>
+      <table>
+        <thead><tr><th data-i18n="s6_c_th1">Camp</th><th data-i18n="s6_c_th2">Descripció</th></tr></thead>
+        <tbody>
+          <tr><td><strong data-i18n="s6_c1">Data i tema</strong></td><td data-i18n="s6_c1d"></td></tr>
+          <tr><td><strong data-i18n="s6_c2">Objectius</strong></td><td data-i18n="s6_c2d"></td></tr>
+          <tr><td><strong data-i18n="s6_c3">Activitats</strong></td><td data-i18n="s6_c3d"></td></tr>
+          <tr><td><strong data-i18n="s6_c4">Recursos</strong></td><td data-i18n="s6_c4d"></td></tr>
+          <tr><td><strong data-i18n="s6_c5">Mitjans audiovisuals</strong></td><td data-i18n="s6_c5d"></td></tr>
+          <tr><td><strong data-i18n="s6_c6">Treball complementari</strong></td><td data-i18n="s6_c6d"></td></tr>
+          <tr><td><strong data-i18n="s6_c7">Evidències</strong></td><td data-i18n="s6_c7d"></td></tr>
+        </tbody>
+      </table>
+
+      <h3 data-i18n="s6_v">Botons visibles / ocults</h3>
+      <p data-i18n="s6_v_p"></p>
+
+      <h3 data-i18n="s6_bt">Botons de la barra superior</h3>
+      <table>
+        <thead><tr><th data-i18n="s6_bt_th1">Botó</th><th data-i18n="s6_bt_th2">Què fa</th></tr></thead>
+        <tbody>
+          <tr><td>🎓 <span data-i18n="s6_bt_b1">Fitxa alumne</span></td><td data-i18n="s6_bt_b1d"></td></tr>
+          <tr><td>+ <span data-i18n="s6_bt_b2">Sessió</span></td><td data-i18n="s6_bt_b2d"></td></tr>
+          <tr><td><span data-i18n="s6_bt_b3">Exporta alumnat</span></td><td data-i18n="s6_bt_b3d"></td></tr>
+          <tr><td><span data-i18n="s6_bt_b4">Exporta</span></td><td data-i18n="s6_bt_b4d"></td></tr>
+          <tr><td><span data-i18n="s6_bt_b5">Importa</span></td><td data-i18n="s6_bt_b5d"></td></tr>
+          <tr><td><span data-i18n="s6_bt_b6">Imprimeix</span></td><td data-i18n="s6_bt_b6d"></td></tr>
+          <tr><td><span data-i18n="s6_bt_b7">Filtre d'estat</span></td><td data-i18n="s6_bt_b7d"></td></tr>
+        </tbody>
+      </table>
+
+      <h3 data-i18n="s6_h">A la capçalera de cada sessió</h3>
+      <table>
+        <thead><tr><th data-i18n="s6_h_th1">Icona</th><th data-i18n="s6_h_th2">Què fa</th></tr></thead>
+        <tbody>
+          <tr><td>▲ / ▼</td><td data-i18n="s6_h1d"></td></tr>
+          <tr><td>🗑</td><td data-i18n="s6_h2d"></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 7. FITXA -->
+    <section class="card" id="fitxa">
+      <h2 data-i18n="s7_t">7. Fitxa de l'alumne</h2>
+      <p data-i18n="s7_p1"></p>
+
+      <h3 data-i18n="s7_com">Com funciona</h3>
+      <ol>
+        <li data-i18n="s7_l1"></li>
+        <li data-i18n="s7_l2"></li>
+        <li data-i18n="s7_l3"></li>
+        <li data-i18n="s7_l4"></li>
+        <li data-i18n="s7_l5"></li>
+        <li data-i18n="s7_l6"></li>
+        <li data-i18n="s7_l7"></li>
+      </ol>
+
+      <div class="box note">
+        <span class="title" data-i18n="s7_b_title">💡 Automàtic</span>
+        <span data-i18n="s7_b_txt"></span>
+      </div>
+
+      <h3 data-i18n="s7_bt">Botons de la fitxa</h3>
+      <table>
+        <thead><tr><th data-i18n="s7_bt_th1">Botó</th><th data-i18n="s7_bt_th2">Què fa</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="s7_bt_b1">Guardar</td><td data-i18n="s7_bt_b1d"></td></tr>
+          <tr><td data-i18n="s7_bt_b2">Imprimir PDF</td><td data-i18n="s7_bt_b2d"></td></tr>
+          <tr><td data-i18n="s7_bt_b3">Enviar</td><td data-i18n="s7_bt_b3d"></td></tr>
+          <tr><td data-i18n="s7_bt_b4">Importar programa</td><td data-i18n="s7_bt_b4d"></td></tr>
+          <tr><td data-i18n="s7_bt_b5">Còpia</td><td data-i18n="s7_bt_b5d"></td></tr>
+          <tr><td data-i18n="s7_bt_b6">Reiniciar</td><td data-i18n="s7_bt_b6d"></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 8. IDIOMES -->
+    <section class="card" id="idiomes">
+      <h2 data-i18n="s8_t">8. Canvi d'idioma</h2>
+      <p data-i18n="s8_p1"></p>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s8_ok_title">✅ Què canvia</span>
+        <span data-i18n="s8_ok_txt"></span>
+      </div>
+
+      <div class="box warn">
+        <span class="title" data-i18n="s8_warn_title">⚠️ Què NO canvia</span>
+        <span data-i18n="s8_warn_txt"></span>
+      </div>
+
+      <p data-i18n="s8_p2"></p>
+    </section>
+
+    <!-- 9. DADES -->
+    <section class="card" id="dades">
+      <h2 data-i18n="s9_t">9. On es guarden les dades</h2>
+      <p data-i18n="s9_p1"></p>
+
+      <ul class="check">
+        <li data-i18n="s9_l1"></li>
+        <li data-i18n="s9_l2"></li>
+        <li data-i18n="s9_l3"></li>
+        <li data-i18n="s9_l4"></li>
+      </ul>
+
+      <div class="box warn">
+        <span class="title" data-i18n="s9_warn_title">⚠️ Important</span>
+        <span data-i18n="s9_warn_txt"></span>
+      </div>
+
+      <h3 data-i18n="s9_keys">Claus internes</h3>
+      <table>
+        <thead><tr><th data-i18n="s9_keys_th1">Fitxer</th><th data-i18n="s9_keys_th2">Clau de localStorage</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="s9_k0">Generador</td><td><code>generadorConfig_v3</code></td></tr>
+          <tr><td data-i18n="s9_k1">Programació</td><td><code>NOMCURT_prog_v2</code> + <code>NOMCURT_prog_v2_overrides</code></td></tr>
+          <tr><td data-i18n="s9_k2">Planificador</td><td><code>NOMCURT_plan_v2</code></td></tr>
+          <tr><td data-i18n="s9_k3">Fitxa alumne</td><td><code>NOMCURT_fitxa_v2_prog</code> + <code>NOMCURT_fitxa_v2_me</code></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.88em;color:var(--gris)" data-i18n="s9_note"></p>
+    </section>
+
+    <!-- 10. BACKUP -->
+    <section class="card" id="backup">
+      <h2 data-i18n="s10_t">10. Còpies de seguretat</h2>
+      <p data-i18n="s10_p1"></p>
+
+      <table>
+        <thead><tr><th data-i18n="s10_th1">Eina</th><th data-i18n="s10_th2">Com fer còpia</th><th data-i18n="s10_th3">Com restaurar</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="s10_r1c1">Generador</td><td data-i18n="s10_r1c2"></td><td data-i18n="s10_r1c3"></td></tr>
+          <tr><td data-i18n="s10_r2c1">Programació</td><td data-i18n="s10_r2c2"></td><td data-i18n="s10_r2c3"></td></tr>
+          <tr><td data-i18n="s10_r3c1">Planificador</td><td data-i18n="s10_r3c2"></td><td data-i18n="s10_r3c3"></td></tr>
+          <tr><td data-i18n="s10_r4c1">Fitxa alumne</td><td data-i18n="s10_r4c2"></td><td data-i18n="s10_r4c3"></td></tr>
+        </tbody>
+      </table>
+
+      <div class="box ok">
+        <span class="title" data-i18n="s10_b_title">📅 Recomanació</span>
+        <span data-i18n="s10_b_txt"></span>
+      </div>
+    </section>
+
+    <!-- 11. CONSELLS -->
+    <section class="card" id="consells">
+      <h2 data-i18n="s11_t">11. Consells pràctics</h2>
+
+      <h3 data-i18n="s11_h1">Organització de carpetes</h3>
+      <p data-i18n="s11_p1"></p>
+      <pre>Fisiologia/
+├── programacio_fisiologia.html
+├── planificador_fisiologia.html
+├── fitxa_alumne_fisiologia.html
+├── copia_programacio_2026-10-09.json
+├── copia_planificador_2026-10-09.json
+└── alumnes/
+    ├── fitxa-Maria.json
+    └── fitxa-Joan.json</pre>
+
+      <h3 data-i18n="s11_h2">Treball en equip</h3>
+      <ul>
+        <li data-i18n="s11_e1"></li>
+        <li data-i18n="s11_e2"></li>
+        <li data-i18n="s11_e3"></li>
+      </ul>
+
+      <h3 data-i18n="s11_h3">Alumnat</h3>
+      <ul>
+        <li data-i18n="s11_a1"></li>
+        <li data-i18n="s11_a2"></li>
+        <li data-i18n="s11_a3"></li>
+        <li data-i18n="s11_a4"></li>
+      </ul>
+
+      <h3 data-i18n="s11_h4">Impressió</h3>
+      <ul>
+        <li data-i18n="s11_i1"></li>
+        <li data-i18n="s11_i2"></li>
+        <li data-i18n="s11_i3"></li>
+      </ul>
+    </section>
+
+    <!-- 12. FAQ -->
+    <section class="card" id="faq">
+      <h2 data-i18n="s12_t">12. Preguntes freqüents</h2>
+
+      <h4 data-i18n="s12_q1">Puc fer servir els fitxers sense Internet?</h4>
+      <p data-i18n="s12_a1"></p>
+
+      <h4 data-i18n="s12_q2">Què passa si canvio d'ordinador?</h4>
+      <p data-i18n="s12_a2"></p>
+
+      <h4 data-i18n="s12_q3">Puc tenir diverses assignatures alhora?</h4>
+      <p data-i18n="s12_a3"></p>
+
+      <h4 data-i18n="s12_q4">Es pot recuperar una versió anterior?</h4>
+      <p data-i18n="s12_a4"></p>
+
+      <h4 data-i18n="s12_q5">Per què el canvi d'idioma no tradueix el meu contingut?</h4>
+      <p data-i18n="s12_a5"></p>
+
+      <h4 data-i18n="s12_q6">Els alumnes poden veure el que he escrit jo?</h4>
+      <p data-i18n="s12_a6"></p>
+
+      <h4 data-i18n="s12_q7">Puc fer servir els fitxers en una tauleta o mòbil?</h4>
+      <p data-i18n="s12_a7"></p>
+
+      <h4 data-i18n="s12_q8">Quantes sessions pot tenir el planificador?</h4>
+      <p data-i18n="s12_a8"></p>
+
+      <h4 data-i18n="s12_q9">Què és el "nom curt" i per què importa?</h4>
+      <p data-i18n="s12_a9"></p>
+
+      <h4 data-i18n="s12_q10">Es poden editar els fitxers HTML a mà?</h4>
+      <p data-i18n="s12_a10"></p>
+
+      <h4 data-i18n="s12_q11">Com comparteixo una sessió concreta amb un company?</h4>
+      <p data-i18n="s12_a11"></p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p data-i18n="footer1">📖 Manual d'ús · Generador d'Eines Didàctiques</p>
+  <p style="font-size:.85em;opacity:.7" data-i18n="footer2">Codi obert · Fet per a professorat que vol eines senzilles i potents</p>
+</footer>
+
+<script>
+/* ==========================================
+   DICCIONARI COMPLET (contingut traduïble)
+   ========================================== */
+const DIC={
+ca:{
+ titol:"📖 Manual · Generador d'Eines Didàctiques",
+ brand:"Manual d'ús", brand_sub:"Generador d'Eines Didàctiques",
+ nav_title:"Índex",
+ nav_intro:"1. Què és", nav_arxius:"2. Els 3 arxius", nav_flux:"3. Flux de treball",
+ nav_generador:"4. El generador", nav_pas1:"· Pas 1: Dades", nav_pas2:"· Pas 2: Aparença",
+ nav_pas3:"· Pas 3: Sessions", nav_pas4:"· Pas 4: Generar",
+ nav_prog:"5. Programació", nav_plan:"6. Planificador", nav_fitxa:"7. Fitxa de l'alumne",
+ nav_idiomes:"8. Canvi d'idioma", nav_dades:"9. On es guarden les dades",
+ nav_backup:"10. Còpies de seguretat", nav_consells:"11. Consells", nav_faq:"12. Preguntes freqüents",
+ h1:"📖 Manual d'ús",
+ sub_h1:"Generador d'Eines Didàctiques · Crea 3 eines HTML per a qualsevol assignatura",
+ s1_t:"1. Què és",
+ s1_p1:"El generador és una eina web que crea 3 fitxers HTML independents a partir d'unes dades bàsiques que omples en un formulari. Un cop generats, els 3 fitxers són completament autònoms: funcionen sols, sense necessitat d'Internet, i es guarden al navegador de cada usuari.",
+ s1_box_title:"🎯 Objectiu",
+ s1_box_txt:"Estalviar hores de feina al professorat: en 4 passos tens 3 eines professionals per gestionar qualsevol assignatura (programació oficial, planificador de sessions i fitxa de seguiment per a l'alumnat).",
+ s1_req:"Què necessites",
+ s1_req1:"Un navegador modern (Chrome, Firefox, Edge, Safari)",
+ s1_req2:"El nom de l'assignatura, el teu nom i el curs acadèmic",
+ s1_req3:"Opcionalment: la llista de sessions (es pot afegir després)",
+ s1_note_title:"💡 No calen coneixements tècnics",
+ s1_note_txt:"Tot es fa amb clics i formularis. Un cop generats els fitxers, els omples escrivint directament a sobre, com si fossin documents de text.",
+
+ s2_t:"2. Els 3 arxius que genera",
+ s2_p1:"El generador crea 3 fitxers HTML amb noms que inclouen el nom curt de l'assignatura per evitar col·lisions si en tens diverses:",
+ s2_th1:"Fitxer", s2_th2:"Per a qui", s2_th3:"Què fa",
+ s2_r1c2:"Professorat", s2_r1c3:"Document oficial de programació didàctica. 10 seccions editables: dades, competències, continguts, avaluació, bibliografia…",
+ s2_r2c2:"Professorat", s2_r2c3:"Planificador de sessions. Permet crear sessions, afegir activitats, recursos, mitjans i exportar-les per a l'alumnat.",
+ s2_r3c2:"Alumnat", s2_r3c3:"Fitxa de seguiment. L'alumne importa el programa del professor, marca l'estat de cada activitat i genera un fitxer per enviar.",
+ s2_box_title:"🔗 Com es connecten",
+ s2_box_txt:"El planificador exporta un fitxer JSON per a l'alumnat (fitxa_alumne-NOM-dades.json) que la fitxa importa. Així els canvis del professor arriben als alumnes sense copiar i enganxar.",
+
+ s3_t:"3. Flux de treball",
+ s3_n1:"Generador", s3_n1s:"Omples dades",
+ s3_n2:"3 fitxers", s3_n2s:"Es descarreguen",
+ s3_n3:"Professor", s3_n3s:"Omple programació + planificador",
+ s3_n4:"Alumnat", s3_n4s:"Importa fitxa i fa seguiment",
+ s3_det:"En detall",
+ s3_l1:"Professor: obre generador.html, omple el formulari i genera els 3 fitxers.",
+ s3_l2:"Professor: obre programacio_NOM.html i escriu el contingut (entrant al mode edició amb ✏️).",
+ s3_l3:"Professor: obre planificador_NOM.html, crea les sessions, afegeix activitats i recursos.",
+ s3_l4:"Professor: prem Exporta alumnat → genera un JSON amb el programa.",
+ s3_l5:"Alumnat: rep el JSON + el fitxer fitxa_alumne_NOM.html.",
+ s3_l6:"Alumnat: obre la fitxa, importa el programa i fa el seguiment de cada activitat.",
+ s3_l7:"Alumnat: prem Enviar → genera un JSON d'entrega per al professor.",
+
+ s4_t:"4. El generador pas a pas",
+ s4_p1:"El generador té 4 passos. Sempre pots tornar enrere amb el botó ← Anterior.",
+ s4_p1t:"Dades bàsiques",
+ s4_p1p:"Omple la informació de l'assignatura i del professorat:",
+ s4_p1l1:"Nom complet (obligatori): apareixerà als 3 fitxers.",
+ s4_p1l2:"Nom curt: s'usa per als noms de fitxer (sense espais).",
+ s4_p1l3:"Curs acadèmic, nivell, caràcter, codi.",
+ s4_p1l4:"Professorat: nom, títol, email, centre.",
+ s4_p1b_title:"💡 Consell",
+ s4_p1b_txt:"El nom curt ha de ser sense espais ni accents (ex: fisiologia, matematiques). Si el deixes buit, s'usa el nom complet.",
+ s4_p2t:"Aparença",
+ s4_p2p:"Tria la icona (emoji) i els colors. Els colors s'apliquen a totes les eines.",
+ s4_p2l1:"Icona: un sol emoji (📚 🎨 🎵 ⚗️ 🩰…).",
+ s4_p2l2:"Colors: pots escollir-los amb el selector o escriure el codi hex.",
+ s4_p2l3:"Temes predefinits: 6 combinacions ja fetes, un clic i llista.",
+ s4_p3t:"Sessions inicials", s4_p3opt:"(opcional)",
+ s4_p3p:"Pots afegir sessions ara, o fer-ho després des del planificador. Dues maneres:",
+ s4_p3l1:"Manual: prem + Afegir sessió i omple data + títol.",
+ s4_p3l2:"CSV: puja un fitxer amb format data,titol (una per línia).",
+ s4_p3p2:"Si no en vols cap, deixa-ho buit: el planificador arrencarà amb una sessió buida que podràs editar.",
+ s4_p4t:"Generar",
+ s4_p4p:"Revisa el resum i prem:",
+ s4_p4l1:"Generar (individual) per a cada fitxer, o",
+ s4_p4l2:"Generar els 3 fitxers per descarregar-los tots de cop.",
+ s4_p4b_title:"📁 On van els fitxers",
+ s4_p4b_txt:"El navegador els descarrega a la carpeta de Descàrregues. Mou-los a una carpeta pròpia de l'assignatura.",
+ s4_aux:"Botons auxiliars del generador",
+ s4_aux_th1:"Botó", s4_aux_th2:"Què fa",
+ s4_aux_b1:"Exportar config", s4_aux_b1d:"Guarda el formulari en un JSON per reutilitzar-lo (per exemple, per a una altra assignatura).",
+ s4_aux_b2:"Importar config", s4_aux_b2d:"Carrega un JSON exportat prèviament i omple el formulari.",
+ s4_aux_b3:"Netejar", s4_aux_b3d:"Esborra el formulari i comença de zero.",
+ s4_aux_b4:"Selector d'idioma", s4_aux_b4d:"Canvia l'idioma de la interfície (CA / ES / EN).",
+
+ s5_t:"5. Programació didàctica",
+ s5_p1:"És el document oficial. Un cop generat, l'obres amb doble clic i veuràs 10 seccions buides:",
+ s5_s1:"Dades identificatives", s5_s2:"Competències i resultats d'aprenentatge",
+ s5_s3:"Enfocament de l'assignatura", s5_s4:"Eix global i productes",
+ s5_s5:"Continguts i sessions", s5_s6:"Cronograma", s5_s7:"Metodologia",
+ s5_s8:"Avaluació", s5_s9:"Bibliografia i recursos", s5_s10:"Annexos i fitxes",
+ s5_edit:"Com editar-la",
+ s5_e1:"Prem ✏️ Edita a la barra superior.",
+ s5_e2:"Fes clic a qualsevol secció i escriu directament.",
+ s5_e3:"Pots enganxar text amb format (taules, llistes, enllaços).",
+ s5_e4:"Prem 💾 Desa per guardar els canvis al navegador.",
+ s5_e5:"Prem ✅ Acaba per sortir del mode edició.",
+ s5_b_title:"✏️ Guia visual",
+ s5_b_txt:"Les seccions buides mostren un missatge groc \"Fes clic a ✏️ Edita per modificar…\". Quan les edités, el missatge desapareix i apareix una etiqueta verda editat.",
+ s5_bt:"Botons de la programació",
+ s5_bt_th1:"Botó", s5_bt_th2:"Què fa",
+ s5_bt_b1:"Exporta", s5_bt_b1d:"Descarrega un JSON amb les teves edicions. Serveix per fer còpia o passar-ho a un company.",
+ s5_bt_b2:"Importa", s5_bt_b2d:"Carrega un JSON d'edicions prèviament exportat.",
+ s5_bt_b3:"Restaura", s5_bt_b3d:"Esborra totes les edicions i torna a les 10 seccions buides.",
+ s5_bt_b4:"Imprimeix", s5_bt_b4d:"Obre el diàleg d'impressió del navegador (es pot desar com a PDF).",
+
+ s6_t:"6. Planificador de sessions",
+ s6_p1:"És l'eina de treball diari del professorat. Cada sessió és una targeta que es pot obrir i tancar clicant a sobre.",
+ s6_c:"Què pot contenir cada sessió",
+ s6_c_th1:"Camp", s6_c_th2:"Descripció",
+ s6_c1:"Data i tema", s6_c1d:"Data de la sessió i títol del tema.",
+ s6_c2:"Objectius", s6_c2d:"Què s'ha d'assolir. Visible per a l'alumnat (es pot ocultar).",
+ s6_c3:"Activitats", s6_c3d:"Cada activitat té: descripció, horari, tipus (teòrica/pràctica/avaluació…) i estat (prevista/feta/pausa/descartada).",
+ s6_c4:"Recursos", s6_c4d:"Enllaços online. Els enllaços es mostren com a targetes clicables.",
+ s6_c5:"Mitjans audiovisuals", s6_c5d:"Vídeos, presentacions, àudios… amb enllaç opcional.",
+ s6_c6:"Treball complementari", s6_c6d:"El que l'alumnat ha de fer fora de l'aula.",
+ s6_c7:"Evidències", s6_c7d:"Què es recollirà com a prova d'aprenentatge.",
+ s6_v:"Botons visibles / ocults",
+ s6_v_p:"Cada bloc té una casella 👁 Visible. Si la desmarques, aquell contingut no s'exportarà cap a l'alumnat (queda com a nota interna del professor).",
+ s6_bt:"Botons de la barra superior",
+ s6_bt_th1:"Botó", s6_bt_th2:"Què fa",
+ s6_bt_b1:"Fitxa alumne", s6_bt_b1d:"Obre la fitxa de l'alumnat en una pestanya nova.",
+ s6_bt_b2:"Sessió", s6_bt_b2d:"Afegeix una sessió nova.",
+ s6_bt_b3:"Exporta alumnat", s6_bt_b3d:"Genera el JSON que l'alumnat importarà a la seva fitxa.",
+ s6_bt_b4:"Exporta", s6_bt_b4d:"Còpia completa del planificador (per restaurar-lo després).",
+ s6_bt_b5:"Importa", s6_bt_b5d:"Carrega una còpia del planificador.",
+ s6_bt_b6:"Imprimeix", s6_bt_b6d:"Vista imprimible (totes les sessions obertes).",
+ s6_bt_b7:"Filtre d'estat", s6_bt_b7d:"Mostra només activitats previstes/fetes/pausa/descartades.",
+ s6_h:"A la capçalera de cada sessió",
+ s6_h_th1:"Icona", s6_h_th2:"Què fa",
+ s6_h1d:"Mou la sessió amunt o avall.",
+ s6_h2d:"Esborra la sessió. Cal clicar 2 cops per confirmar.",
+
+ s7_t:"7. Fitxa de l'alumne",
+ s7_p1:"És l'eina que rep l'alumnat. Funciona com un quadern digital de seguiment: marca l'estat de cada activitat i genera un informe per al professor.",
+ s7_com:"Com funciona",
+ s7_l1:"L'alumne obre la fitxa.",
+ s7_l2:"Omple les seves dades personals (nom, email, curs).",
+ s7_l3:"Prem Importar programa i selecciona el JSON que li ha enviat el professor.",
+ s7_l4:"Tria la sessió de la llista desplegable.",
+ s7_l5:"Marca l'estat de cada activitat: Feta / Pendent / No feta.",
+ s7_l6:"Pot escriure observacions a cada activitat i a la sessió.",
+ s7_l7:"Prem Enviar per generar un JSON d'entrega que envia al professor.",
+ s7_b_title:"💡 Automàtic",
+ s7_b_txt:"Tot el que escriu l'alumne es guarda sol al seu navegador. Pot tancar la fitxa i tornar-hi més tard: tot hi serà.",
+ s7_bt:"Botons de la fitxa",
+ s7_bt_th1:"Botó", s7_bt_th2:"Què fa",
+ s7_bt_b1:"Guardar", s7_bt_b1d:"Força el desat immediat (normalment és automàtic).",
+ s7_bt_b2:"Imprimir PDF", s7_bt_b2d:"Genera un PDF amb tota la fitxa (útil per arxivar).",
+ s7_bt_b3:"Enviar", s7_bt_b3d:"Crea un JSON d'entrega que l'alumne envia al professor.",
+ s7_bt_b4:"Importar programa", s7_bt_b4d:"Carrega el JSON del professor (o una còpia de seguretat).",
+ s7_bt_b5:"Còpia", s7_bt_b5d:"Descarrega un JSON amb tot el progrés de l'alumne.",
+ s7_bt_b6:"Reiniciar", s7_bt_b6d:"Esborra tot el progrés (amb confirmació).",
+
+ s8_t:"8. Canvi d'idioma",
+ s8_p1:"Tots els fitxers (generador, programació, planificador, fitxa) tenen un selector d'idioma a la barra superior: CA · ES · EN.",
+ s8_ok_title:"✅ Què canvia",
+ s8_ok_txt:"Títols de secció, etiquetes dels formularis, botons i menús, missatges del sistema (toasts), placeholders (text gris dins els camps buits).",
+ s8_warn_title:"⚠️ Què NO canvia",
+ s8_warn_txt:"El contingut que has escrit tu (el text de les sessions, els objectius, les activitats, les observacions…) no es tradueix mai. Es queda exactament com l'has escrit, en l'idioma que sigui.",
+ s8_p2:"Això és intencionat: el canvi d'idioma serveix per adaptar la interfície, no per traduir contingut pedagògic (que potser vols mantenir en un idioma concret).",
+
+ s9_t:"9. On es guarden les dades",
+ s9_p1:"Tots els fitxers guarden les dades al localStorage del navegador, identificades per una clau única per assignatura. Això vol dir:",
+ s9_l1:"Les dades són locals: no s'envien a cap servidor.",
+ s9_l2:"Si canvies d'ordinador, les dades no et segueixen automàticament.",
+ s9_l3:"Si esborres les dades del navegador, es perden les edicions.",
+ s9_l4:"Diverses assignatures conviuen sense trepitjar-se (claus diferents).",
+ s9_warn_title:"⚠️ Important",
+ s9_warn_txt:"Fes còpies de seguretat periòdicament (vegeu la secció 10). El navegador pot esborrar dades si buides la caché o canvies de dispositiu.",
+ s9_keys:"Claus internes",
+ s9_keys_th1:"Fitxer", s9_keys_th2:"Clau de localStorage",
+ s9_k0:"Generador", s9_k1:"Programació", s9_k2:"Planificador", s9_k3:"Fitxa alumne",
+ s9_note:"On NOMCURT és el nom curt de l'assignatura (sense espais ni accents).",
+
+ s10_t:"10. Còpies de seguretat",
+ s10_p1:"Com que les dades viuen al navegador, cal exportar-les periòdicament per no perdre-les.",
+ s10_th1:"Eina", s10_th2:"Com fer còpia", s10_th3:"Com restaurar",
+ s10_r1c1:"Generador", s10_r1c2:"Botó 💾 Exportar config", s10_r1c3:"Botó 📤 Importar config",
+ s10_r2c1:"Programació", s10_r2c2:"Botó ⬇ Exporta", s10_r2c3:"Botó ⬆ Importa",
+ s10_r3c1:"Planificador", s10_r3c2:"Botó Exporta", s10_r3c3:"Botó Importa",
+ s10_r4c1:"Fitxa alumne", s10_r4c2:"Botó Còpia", s10_r4c3:"Botó Importar programa (detecta el tipus automàticament)",
+ s10_b_title:"📅 Recomanació",
+ s10_b_txt:"Fes una còpia del planificador i de la programació un cop per setmana i al final de cada trimestre. Guarda els JSON en un núvol (Drive, Dropbox, OneDrive…).",
+
+ s11_t:"11. Consells pràctics",
+ s11_h1:"Organització de carpetes",
+ s11_p1:"Crea una carpeta per assignatura amb aquesta estructura:",
+ s11_h2:"Treball en equip",
+ s11_e1:"Comparteix el planificador_NOM.html amb els companys del departament.",
+ s11_e2:"Cada professor té les seves dades locals, però comparteixen el mateix formulari.",
+ s11_e3:"Exporta el planificador per intercanviar sessions entre companys.",
+ s11_h3:"Alumnat",
+ s11_a1:"Envia el JSON del programa a l'inici del curs.",
+ s11_a2:"Cada alumne l'importa una sola vegada a la seva fitxa.",
+ s11_a3:"Al final de cada sessió, cada alumne marca el seu progrés.",
+ s11_a4:"Setmanalment, cada alumne t'envia el JSON d'entrega.",
+ s11_h4:"Impressió",
+ s11_i1:"La programació i el planificador tenen estil d'impressió optimitzat.",
+ s11_i2:"Prem Imprimeix i escull \"Desa com a PDF\" per obtenir una còpia.",
+ s11_i3:"Els botons i menús no apareixen a la impressió.",
+
+ s12_t:"12. Preguntes freqüents",
+ s12_q1:"Puc fer servir els fitxers sense Internet?", s12_a1:"Sí. Els 3 fitxers són HTML autocontinguts. Funcionen amb doble clic des de l'escriptori, sense connexió.",
+ s12_q2:"Què passa si canvio d'ordinador?", s12_a2:"Les teves dades es queden a l'ordinador vell. Cal exportar còpies (JSON) i importar-les al nou ordinador.",
+ s12_q3:"Puc tenir diverses assignatures alhora?", s12_a3:"Sí. Cada assignatura genera els seus propis fitxers i fa servir claus de localStorage diferents. No es trepitgen.",
+ s12_q4:"Es pot recuperar una versió anterior?", s12_a4:"El planificador i la programació guarden versions al navegador, però el sistema més fiable és importar una còpia JSON.",
+ s12_q5:"Per què el canvi d'idioma no tradueix el meu contingut?", s12_a5:"Perquè el contingut és teu i potser el vols en un idioma concret. El selector només afecta les etiquetes de la interfície.",
+ s12_q6:"Els alumnes poden veure el que he escrit jo?", s12_a6:"Només el que exportes amb el botó Exporta alumnat del planificador. Tot el que marquis com a no visible (👁 desactivat) no surt.",
+ s12_q7:"Puc fer servir els fitxers en una tauleta o mòbil?", s12_a7:"Els fitxers són responsius i funcionen, però estan pensats per a escriptori. Per escriure contingut llarg, millor un ordinador.",
+ s12_q8:"Quantes sessions pot tenir el planificador?", s12_a8:"No hi ha límit pràctic. El rendiment pot baixar a partir de 100+ sessions amb moltes activitats, però és difícil arribar-hi.",
+ s12_q9:"Què és el \"nom curt\" i per què importa?", s12_a9:"És un identificador sense espais ni accents (ex: fisiologia). S'usa per anomenar els fitxers i les claus internes. Si canvia, els fitxers nous no trobaran les dades dels antics.",
+ s12_q10:"Es poden editar els fitxers HTML a mà?", s12_a10:"Sí, però no és recomanable: trencaries l'estructura i els scripts interns. Fes servir sempre els botons de la interfície.",
+ s12_q11:"Com comparteixo una sessió concreta amb un company?", s12_a11:"Exporta el planificador, obre el JSON amb un editor de text i copia només la part de la sessió que vols compartir. El company l'importa al seu propi planificador.",
+
+ footer1:"📖 Manual d'ús · Generador d'Eines Didàctiques",
+ footer2:"Codi obert · Fet per a professorat que vol eines senzilles i potents"
+},
+
+es:{
+ titol:"📖 Manual · Generador de Herramientas Didácticas",
+ brand:"Manual de uso", brand_sub:"Generador de Herramientas Didácticas",
+ nav_title:"Índice",
+ nav_intro:"1. Qué es", nav_arxius:"2. Los 3 archivos", nav_flux:"3. Flujo de trabajo",
+ nav_generador:"4. El generador", nav_pas1:"· Paso 1: Datos", nav_pas2:"· Paso 2: Apariencia",
+ nav_pas3:"· Paso 3: Sesiones", nav_pas4:"· Paso 4: Generar",
+ nav_prog:"5. Programación", nav_plan:"6. Planificador", nav_fitxa:"7. Ficha del alumno",
+ nav_idiomes:"8. Cambio de idioma", nav_dades:"9. Dónde se guardan los datos",
+ nav_backup:"10. Copias de seguridad", nav_consells:"11. Consejos", nav_faq:"12. Preguntas frecuentes",
+ h1:"📖 Manual de uso",
+ sub_h1:"Generador de Herramientas Didácticas · Crea 3 herramientas HTML para cualquier asignatura",
+ s1_t:"1. Qué es",
+ s1_p1:"El generador es una herramienta web que crea 3 archivos HTML independientes a partir de unos datos básicos que rellenas en un formulario. Una vez generados, los 3 archivos son completamente autónomos: funcionan solos, sin necesidad de Internet, y se guardan en el navegador de cada usuario.",
+ s1_box_title:"🎯 Objetivo",
+ s1_box_txt:"Ahorrar horas de trabajo al profesorado: en 4 pasos tienes 3 herramientas profesionales para gestionar cualquier asignatura (programación oficial, planificador de sesiones y ficha de seguimiento para el alumnado).",
+ s1_req:"Qué necesitas",
+ s1_req1:"Un navegador moderno (Chrome, Firefox, Edge, Safari)",
+ s1_req2:"El nombre de la asignatura, tu nombre y el curso académico",
+ s1_req3:"Opcionalmente: la lista de sesiones (se puede añadir después)",
+ s1_note_title:"💡 No se necesitan conocimientos técnicos",
+ s1_note_txt:"Todo se hace con clics y formularios. Una vez generados los archivos, los rellenas escribiendo directamente encima, como si fueran documentos de texto.",
+
+ s2_t:"2. Los 3 archivos que genera",
+ s2_p1:"El generador crea 3 archivos HTML con nombres que incluyen el nombre corto de la asignatura para evitar colisiones si tienes varias:",
+ s2_th1:"Archivo", s2_th2:"Para quién", s2_th3:"Qué hace",
+ s2_r1c2:"Profesorado", s2_r1c3:"Documento oficial de programación didáctica. 10 secciones editables: datos, competencias, contenidos, evaluación, bibliografía…",
+ s2_r2c2:"Profesorado", s2_r2c3:"Planificador de sesiones. Permite crear sesiones, añadir actividades, recursos, medios y exportarlas para el alumnado.",
+ s2_r3c2:"Alumnado", s2_r3c3:"Ficha de seguimiento. El alumno importa el programa del profesor, marca el estado de cada actividad y genera un archivo para enviar.",
+ s2_box_title:"🔗 Cómo se conectan",
+ s2_box_txt:"El planificador exporta un archivo JSON para el alumnado (fitxa_alumne-NOM-dades.json) que la ficha importa. Así los cambios del profesor llegan a los alumnos sin copiar y pegar.",
+
+ s3_t:"3. Flujo de trabajo",
+ s3_n1:"Generador", s3_n1s:"Rellenas datos",
+ s3_n2:"3 archivos", s3_n2s:"Se descargan",
+ s3_n3:"Profesor", s3_n3s:"Rellena programación + planificador",
+ s3_n4:"Alumnado", s3_n4s:"Importa ficha y hace seguimiento",
+ s3_det:"En detalle",
+ s3_l1:"Profesor: abre generador.html, rellena el formulario y genera los 3 archivos.",
+ s3_l2:"Profesor: abre programacio_NOM.html y escribe el contenido (entrando al modo edición con ✏️).",
+ s3_l3:"Profesor: abre planificador_NOM.html, crea las sesiones, añade actividades y recursos.",
+ s3_l4:"Profesor: pulsa Exporta alumnado → genera un JSON con el programa.",
+ s3_l5:"Alumnado: recibe el JSON + el archivo fitxa_alumne_NOM.html.",
+ s3_l6:"Alumnado: abre la ficha, importa el programa y hace el seguimiento de cada actividad.",
+ s3_l7:"Alumnado: pulsa Enviar → genera un JSON de entrega para el profesor.",
+
+ s4_t:"4. El generador paso a paso",
+ s4_p1:"El generador tiene 4 pasos. Siempre puedes volver atrás con el botón ← Anterior.",
+ s4_p1t:"Datos básicos",
+ s4_p1p:"Rellena la información de la asignatura y del profesorado:",
+ s4_p1l1:"Nombre completo (obligatorio): aparecerá en los 3 archivos.",
+ s4_p1l2:"Nombre corto: se usa para los nombres de archivo (sin espacios).",
+ s4_p1l3:"Curso académico, nivel, carácter, código.",
+ s4_p1l4:"Profesorado: nombre, título, email, centro.",
+ s4_p1b_title:"💡 Consejo",
+ s4_p1b_txt:"El nombre corto debe ser sin espacios ni acentos (ej: fisiologia, matematiques). Si lo dejas vacío, se usa el nombre completo.",
+ s4_p2t:"Apariencia",
+ s4_p2p:"Elige el icono (emoji) y los colores. Los colores se aplican a todas las herramientas.",
+ s4_p2l1:"Icono: un solo emoji (📚 🎨 🎵 ⚗️ 🩰…).",
+ s4_p2l2:"Colores: puedes elegirlos con el selector o escribir el código hex.",
+ s4_p2l3:"Temas predefinidos: 6 combinaciones ya hechas, un clic y listo.",
+ s4_p3t:"Sesiones iniciales", s4_p3opt:"(opcional)",
+ s4_p3p:"Puedes añadir sesiones ahora, o hacerlo después desde el planificador. Dos maneras:",
+ s4_p3l1:"Manual: pulsa + Añadir sesión y rellena fecha + título.",
+ s4_p3l2:"CSV: sube un archivo con formato fecha,título (una por línea).",
+ s4_p3p2:"Si no quieres ninguna, déjalo vacío: el planificador arrancará con una sesión vacía que podrás editar.",
+ s4_p4t:"Generar",
+ s4_p4p:"Revisa el resumen y pulsa:",
+ s4_p4l1:"Generar (individual) para cada archivo, o",
+ s4_p4l2:"Generar los 3 archivos para descargarlos todos de golpe.",
+ s4_p4b_title:"📁 Dónde van los archivos",
+ s4_p4b_txt:"El navegador los descarga en la carpeta de Descargas. Muévelos a una carpeta propia de la asignatura.",
+ s4_aux:"Botones auxiliares del generador",
+ s4_aux_th1:"Botón", s4_aux_th2:"Qué hace",
+ s4_aux_b1:"Exportar config", s4_aux_b1d:"Guarda el formulario en un JSON para reutilizarlo (por ejemplo, para otra asignatura).",
+ s4_aux_b2:"Importar config", s4_aux_b2d:"Carga un JSON exportado previamente y rellena el formulario.",
+ s4_aux_b3:"Limpiar", s4_aux_b3d:"Borra el formulario y empieza de cero.",
+ s4_aux_b4:"Selector de idioma", s4_aux_b4d:"Cambia el idioma de la interfaz (CA / ES / EN).",
+
+ s5_t:"5. Programación didáctica",
+ s5_p1:"Es el documento oficial. Una vez generado, lo abres con doble clic y verás 10 secciones vacías:",
+ s5_s1:"Datos identificativos", s5_s2:"Competencias y resultados de aprendizaje",
+ s5_s3:"Enfoque de la asignatura", s5_s4:"Eje global y productos",
+ s5_s5:"Contenidos y sesiones", s5_s6:"Cronograma", s5_s7:"Metodología",
+ s5_s8:"Evaluación", s5_s9:"Bibliografía y recursos", s5_s10:"Anexos y fichas",
+ s5_edit:"Cómo editarla",
+ s5_e1:"Pulsa ✏️ Editar en la barra superior.",
+ s5_e2:"Haz clic en cualquier sección y escribe directamente.",
+ s5_e3:"Puedes pegar texto con formato (tablas, listas, enlaces).",
+ s5_e4:"Pulsa 💾 Guardar para guardar los cambios en el navegador.",
+ s5_e5:"Pulsa ✅ Terminar para salir del modo edición.",
+ s5_b_title:"✏️ Guía visual",
+ s5_b_txt:"Las secciones vacías muestran un mensaje amarillo \"Haz clic en ✏️ Editar para modificar…\". Cuando las edites, el mensaje desaparece y aparece una etiqueta verde editado.",
+ s5_bt:"Botones de la programación",
+ s5_bt_th1:"Botón", s5_bt_th2:"Qué hace",
+ s5_bt_b1:"Exportar", s5_bt_b1d:"Descarga un JSON con tus ediciones. Sirve para hacer copia o pasarlo a un compañero.",
+ s5_bt_b2:"Importar", s5_bt_b2d:"Carga un JSON de ediciones previamente exportado.",
+ s5_bt_b3:"Restaurar", s5_bt_b3d:"Borra todas las ediciones y vuelve a las 10 secciones vacías.",
+ s5_bt_b4:"Imprimir", s5_bt_b4d:"Abre el diálogo de impresión del navegador (se puede guardar como PDF).",
+
+ s6_t:"6. Planificador de sesiones",
+ s6_p1:"Es la herramienta de trabajo diario del profesorado. Cada sesión es una tarjeta que se puede abrir y cerrar clicando encima.",
+ s6_c:"Qué puede contener cada sesión",
+ s6_c_th1:"Campo", s6_c_th2:"Descripción",
+ s6_c1:"Fecha y tema", s6_c1d:"Fecha de la sesión y título del tema.",
+ s6_c2:"Objetivos", s6_c2d:"Qué se debe alcanzar. Visible para el alumnado (se puede ocultar).",
+ s6_c3:"Actividades", s6_c3d:"Cada actividad tiene: descripción, horario, tipo (teórica/práctica/evaluación…) y estado (prevista/hecha/pausa/descartada).",
+ s6_c4:"Recursos", s6_c4d:"Enlaces online. Los enlaces se muestran como tarjetas clicables.",
+ s6_c5:"Medios audiovisuales", s6_c5d:"Vídeos, presentaciones, audios… con enlace opcional.",
+ s6_c6:"Trabajo complementario", s6_c6d:"Lo que el alumnado debe hacer fuera del aula.",
+ s6_c7:"Evidencias", s6_c7d:"Qué se recogerá como prueba de aprendizaje.",
+ s6_v:"Botones visibles / ocultos",
+ s6_v_p:"Cada bloque tiene una casilla 👁 Visible. Si la desmarcas, ese contenido no se exportará hacia el alumnado (queda como nota interna del profesor).",
+ s6_bt:"Botones de la barra superior",
+ s6_bt_th1:"Botón", s6_bt_th2:"Qué hace",
+ s6_bt_b1:"Ficha alumno", s6_bt_b1d:"Abre la ficha del alumnado en una pestaña nueva.",
+ s6_bt_b2:"Sesión", s6_bt_b2d:"Añade una sesión nueva.",
+ s6_bt_b3:"Exportar alumnado", s6_bt_b3d:"Genera el JSON que el alumnado importará a su ficha.",
+ s6_bt_b4:"Exportar", s6_bt_b4d:"Copia completa del planificador (para restaurarlo después).",
+ s6_bt_b5:"Importar", s6_bt_b5d:"Carga una copia del planificador.",
+ s6_bt_b6:"Imprimir", s6_bt_b6d:"Vista imprimible (todas las sesiones abiertas).",
+ s6_bt_b7:"Filtro de estado", s6_bt_b7d:"Muestra solo actividades previstas/hechas/pausa/descartadas.",
+ s6_h:"En la cabecera de cada sesión",
+ s6_h_th1:"Icono", s6_h_th2:"Qué hace",
+ s6_h1d:"Mueve la sesión arriba o abajo.",
+ s6_h2d:"Borra la sesión. Hay que clicar 2 veces para confirmar.",
+
+ s7_t:"7. Ficha del alumno",
+ s7_p1:"Es la herramienta que recibe el alumnado. Funciona como un cuaderno digital de seguimiento: marca el estado de cada actividad y genera un informe para el profesor.",
+ s7_com:"Cómo funciona",
+ s7_l1:"El alumno abre la ficha.",
+ s7_l2:"Rellena sus datos personales (nombre, email, curso).",
+ s7_l3:"Pulsa Importar programa y selecciona el JSON que le ha enviado el profesor.",
+ s7_l4:"Elige la sesión de la lista desplegable.",
+ s7_l5:"Marca el estado de cada actividad: Hecha / Pendiente / No hecha.",
+ s7_l6:"Puede escribir observaciones en cada actividad y en la sesión.",
+ s7_l7:"Pulsa Enviar para generar un JSON de entrega que envía al profesor.",
+ s7_b_title:"💡 Automático",
+ s7_b_txt:"Todo lo que escribe el alumno se guarda solo en su navegador. Puede cerrar la ficha y volver más tarde: todo estará ahí.",
+ s7_bt:"Botones de la ficha",
+ s7_bt_th1:"Botón", s7_bt_th2:"Qué hace",
+ s7_bt_b1:"Guardar", s7_bt_b1d:"Fuerza el guardado inmediato (normalmente es automático).",
+ s7_bt_b2:"Imprimir PDF", s7_bt_b2d:"Genera un PDF con toda la ficha (útil para archivar).",
+ s7_bt_b3:"Enviar", s7_bt_b3d:"Crea un JSON de entrega que el alumno envía al profesor.",
+ s7_bt_b4:"Importar programa", s7_bt_b4d:"Carga el JSON del profesor (o una copia de seguridad).",
+ s7_bt_b5:"Copia", s7_bt_b5d:"Descarga un JSON con todo el progreso del alumno.",
+ s7_bt_b6:"Reiniciar", s7_bt_b6d:"Borra todo el progreso (con confirmación).",
+
+ s8_t:"8. Cambio de idioma",
+ s8_p1:"Todos los archivos (generador, programación, planificador, ficha) tienen un selector de idioma en la barra superior: CA · ES · EN.",
+ s8_ok_title:"✅ Qué cambia",
+ s8_ok_txt:"Títulos de sección, etiquetas de los formularios, botones y menús, mensajes del sistema (toasts), placeholders (texto gris dentro de los campos vacíos).",
+ s8_warn_title:"⚠️ Qué NO cambia",
+ s8_warn_txt:"El contenido que has escrito tú (el texto de las sesiones, los objetivos, las actividades, las observaciones…) no se traduce nunca. Se queda exactamente como lo escribiste, en el idioma que sea.",
+ s8_p2:"Esto es intencionado: el cambio de idioma sirve para adaptar la interfaz, no para traducir contenido pedagógico (que quizás quieres mantener en un idioma concreto).",
+
+ s9_t:"9. Dónde se guardan los datos",
+ s9_p1:"Todos los archivos guardan los datos en el localStorage del navegador, identificados por una clave única por asignatura. Esto significa:",
+ s9_l1:"Los datos son locales: no se envían a ningún servidor.",
+ s9_l2:"Si cambias de ordenador, los datos no te siguen automáticamente.",
+ s9_l3:"Si borras los datos del navegador, se pierden las ediciones.",
+ s9_l4:"Varias asignaturas conviven sin pisarse (claves diferentes).",
+ s9_warn_title:"⚠️ Importante",
+ s9_warn_txt:"Haz copias de seguridad periódicamente (ver sección 10). El navegador puede borrar datos si vacías la caché o cambias de dispositivo.",
+ s9_keys:"Claves internas",
+ s9_keys_th1:"Archivo", s9_keys_th2:"Clave de localStorage",
+ s9_k0:"Generador", s9_k1:"Programación", s9_k2:"Planificador", s9_k3:"Ficha alumno",
+ s9_note:"Donde NOMCURT es el nombre corto de la asignatura (sin espacios ni acentos).",
+
+ s10_t:"10. Copias de seguridad",
+ s10_p1:"Como los datos viven en el navegador, hay que exportarlos periódicamente para no perderlos.",
+ s10_th1:"Herramienta", s10_th2:"Cómo hacer copia", s10_th3:"Cómo restaurar",
+ s10_r1c1:"Generador", s10_r1c2:"Botón 💾 Exportar config", s10_r1c3:"Botón 📤 Importar config",
+ s10_r2c1:"Programación", s10_r2c2:"Botón ⬇ Exportar", s10_r2c3:"Botón ⬆ Importar",
+ s10_r3c1:"Planificador", s10_r3c2:"Botón Exportar", s10_r3c3:"Botón Importar",
+ s10_r4c1:"Ficha alumno", s10_r4c2:"Botón Copia", s10_r4c3:"Botón Importar programa (detecta el tipo automáticamente)",
+ s10_b_title:"📅 Recomendación",
+ s10_b_txt:"Haz una copia del planificador y de la programación una vez por semana y al final de cada trimestre. Guarda los JSON en una nube (Drive, Dropbox, OneDrive…).",
+
+ s11_t:"11. Consejos prácticos",
+ s11_h1:"Organización de carpetas",
+ s11_p1:"Crea una carpeta por asignatura con esta estructura:",
+ s11_h2:"Trabajo en equipo",
+ s11_e1:"Comparte el planificador_NOM.html con los compañeros del departamento.",
+ s11_e2:"Cada profesor tiene sus datos locales, pero comparten el mismo formulario.",
+ s11_e3:"Exporta el planificador para intercambiar sesiones entre compañeros.",
+ s11_h3:"Alumnado",
+ s11_a1:"Envía el JSON del programa al inicio del curso.",
+ s11_a2:"Cada alumno lo importa una sola vez a su ficha.",
+ s11_a3:"Al final de cada sesión, cada alumno marca su progreso.",
+ s11_a4:"Semanalmente, cada alumno te envía el JSON de entrega.",
+ s11_h4:"Impresión",
+ s11_i1:"La programación y el planificador tienen estilo de impresión optimizado.",
+ s11_i2:"Pulsa Imprimir y elige \"Guardar como PDF\" para obtener una copia.",
+ s11_i3:"Los botones y menús no aparecen en la impresión.",
+
+ s12_t:"12. Preguntas frecuentes",
+ s12_q1:"¿Puedo usar los archivos sin Internet?", s12_a1:"Sí. Los 3 archivos son HTML autocontenidos. Funcionan con doble clic desde el escritorio, sin conexión.",
+ s12_q2:"¿Qué pasa si cambio de ordenador?", s12_a2:"Tus datos se quedan en el ordenador viejo. Hay que exportar copias (JSON) e importarlas en el nuevo ordenador.",
+ s12_q3:"¿Puedo tener varias asignaturas a la vez?", s12_a3:"Sí. Cada asignatura genera sus propios archivos y usa claves de localStorage diferentes. No se pisan.",
+ s12_q4:"¿Se puede recuperar una versión anterior?", s12_a4:"El planificador y la programación guardan versiones en el navegador, pero el sistema más fiable es importar una copia JSON.",
+ s12_q5:"¿Por qué el cambio de idioma no traduce mi contenido?", s12_a5:"Porque el contenido es tuyo y quizás lo quieres en un idioma concreto. El selector solo afecta a las etiquetas de la interfaz.",
+ s12_q6:"¿Los alumnos pueden ver lo que he escrito yo?", s12_a6:"Solo lo que exportas con el botón Exportar alumnado del planificador. Todo lo que marques como no visible (👁 desactivado) no sale.",
+ s12_q7:"¿Puedo usar los archivos en una tableta o móvil?", s12_a7:"Los archivos son responsivos y funcionan, pero están pensados para escritorio. Para escribir contenido largo, mejor un ordenador.",
+ s12_q8:"¿Cuántas sesiones puede tener el planificador?", s12_a8:"No hay límite práctico. El rendimiento puede bajar a partir de 100+ sesiones con muchas actividades, pero es difícil llegar a eso.",
+ s12_q9:"¿Qué es el \"nombre corto\" y por qué importa?", s12_a9:"Es un identificador sin espacios ni acentos (ej: fisiologia). Se usa para nombrar los archivos y las claves internas. Si cambia, los archivos nuevos no encontrarán los datos de los antiguos.",
+ s12_q10:"¿Se pueden editar los archivos HTML a mano?", s12_a10:"Sí, pero no es recomendable: romperías la estructura y los scripts internos. Usa siempre los botones de la interfaz.",
+ s12_q11:"¿Cómo comparto una sesión concreta con un compañero?", s12_a11:"Exporta el planificador, abre el JSON con un editor de texto y copia solo la parte de la sesión que quieres compartir. El compañero la importa a su propio planificador.",
+
+ footer1:"📖 Manual de uso · Generador de Herramientas Didácticas",
+ footer2:"Código abierto · Hecho para profesorado que quiere herramientas sencillas y potentes"
+},
+
+en:{
+ titol:"📖 Manual · Teaching Tools Generator",
+ brand:"User manual", brand_sub:"Teaching Tools Generator",
+ nav_title:"Contents",
+ nav_intro:"1. What it is", nav_arxius:"2. The 3 files", nav_flux:"3. Workflow",
+ nav_generador:"4. The generator", nav_pas1:"· Step 1: Data", nav_pas2:"· Step 2: Appearance",
+ nav_pas3:"· Step 3: Sessions", nav_pas4:"· Step 4: Generate",
+ nav_prog:"5. Programme", nav_plan:"6. Planner", nav_fitxa:"7. Student sheet",
+ nav_idiomes:"8. Language switch", nav_dades:"9. Where data is stored",
+ nav_backup:"10. Backups", nav_consells:"11. Tips", nav_faq:"12. FAQ",
+ h1:"📖 User manual",
+ sub_h1:"Teaching Tools Generator · Create 3 HTML tools for any subject",
+ s1_t:"1. What it is",
+ s1_p1:"The generator is a web tool that creates 3 independent HTML files from some basic data you fill in a form. Once generated, the 3 files are completely self-contained: they work on their own, without Internet, and save to each user's browser.",
+ s1_box_title:"🎯 Purpose",
+ s1_box_txt:"Save teachers hours of work: in 4 steps you get 3 professional tools to manage any subject (official programme, session planner and student tracking sheet).",
+ s1_req:"What you need",
+ s1_req1:"A modern browser (Chrome, Firefox, Edge, Safari)",
+ s1_req2:"Subject name, your name and academic year",
+ s1_req3:"Optional: the list of sessions (can be added later)",
+ s1_note_title:"💡 No technical knowledge required",
+ s1_note_txt:"Everything is done with clicks and forms. Once the files are generated, you fill them in by typing directly on them, as if they were text documents.",
+
+ s2_t:"2. The 3 files it generates",
+ s2_p1:"The generator creates 3 HTML files whose names include the subject short name to avoid clashes if you have several:",
+ s2_th1:"File", s2_th2:"For whom", s2_th3:"What it does",
+ s2_r1c2:"Teachers", s2_r1c3:"Official teaching programme document. 10 editable sections: data, competences, contents, assessment, bibliography…",
+ s2_r2c2:"Teachers", s2_r2c3:"Session planner. Lets you create sessions, add activities, resources, media and export them for students.",
+ s2_r3c2:"Students", s2_r3c3:"Tracking sheet. The student imports the teacher's programme, marks each activity's status and generates a file to send back.",
+ s2_box_title:"🔗 How they connect",
+ s2_box_txt:"The planner exports a JSON file for students (fitxa_alumne-NOM-dades.json) that the sheet imports. This way the teacher's changes reach students without copy-paste.",
+
+ s3_t:"3. Workflow",
+ s3_n1:"Generator", s3_n1s:"You fill data",
+ s3_n2:"3 files", s3_n2s:"They download",
+ s3_n3:"Teacher", s3_n3s:"Fills programme + planner",
+ s3_n4:"Students", s3_n4s:"Import sheet and track",
+ s3_det:"In detail",
+ s3_l1:"Teacher: opens generador.html, fills the form and generates the 3 files.",
+ s3_l2:"Teacher: opens programacio_NOM.html and writes the content (entering edit mode with ✏️).",
+ s3_l3:"Teacher: opens planificador_NOM.html, creates sessions, adds activities and resources.",
+ s3_l4:"Teacher: presses Export for students → generates a JSON with the programme.",
+ s3_l5:"Students: receive the JSON + the file fitxa_alumne_NOM.html.",
+ s3_l6:"Students: open the sheet, import the programme and track each activity.",
+ s3_l7:"Students: press Send → generates a delivery JSON for the teacher.",
+
+ s4_t:"4. The generator step by step",
+ s4_p1:"The generator has 4 steps. You can always go back with the ← Previous button.",
+ s4_p1t:"Basic data",
+ s4_p1p:"Fill in the subject and teacher information:",
+ s4_p1l1:"Full name (required): will appear in the 3 files.",
+ s4_p1l2:"Short name: used for file names (no spaces).",
+ s4_p1l3:"Academic year, level, type, code.",
+ s4_p1l4:"Teacher: name, title, email, centre.",
+ s4_p1b_title:"💡 Tip",
+ s4_p1b_txt:"The short name must have no spaces or accents (e.g. physiology, mathematics). If left blank, the full name is used.",
+ s4_p2t:"Appearance",
+ s4_p2p:"Choose the icon (emoji) and colours. Colours apply to all tools.",
+ s4_p2l1:"Icon: a single emoji (📚 🎨 🎵 ⚗️ 🩰…).",
+ s4_p2l2:"Colours: pick them with the selector or type the hex code.",
+ s4_p2l3:"Predefined themes: 6 ready-made combinations, one click and done.",
+ s4_p3t:"Initial sessions", s4_p3opt:"(optional)",
+ s4_p3p:"You can add sessions now, or later from the planner. Two ways:",
+ s4_p3l1:"Manual: press + Add session and fill date + title.",
+ s4_p3l2:"CSV: upload a file with format date,title (one per line).",
+ s4_p3p2:"If you don't want any, leave it empty: the planner will start with one empty session you can edit.",
+ s4_p4t:"Generate",
+ s4_p4p:"Review the summary and press:",
+ s4_p4l1:"Generate (individual) for each file, or",
+ s4_p4l2:"Generate the 3 files to download them all at once.",
+ s4_p4b_title:"📁 Where the files go",
+ s4_p4b_txt:"The browser downloads them to the Downloads folder. Move them to a folder of your own for the subject.",
+ s4_aux:"Generator auxiliary buttons",
+ s4_aux_th1:"Button", s4_aux_th2:"What it does",
+ s4_aux_b1:"Export config", s4_aux_b1d:"Saves the form as a JSON to reuse it (for example, for another subject).",
+ s4_aux_b2:"Import config", s4_aux_b2d:"Loads a previously exported JSON and fills the form.",
+ s4_aux_b3:"Clear", s4_aux_b3d:"Clears the form and starts from scratch.",
+ s4_aux_b4:"Language selector", s4_aux_b4d:"Changes the interface language (CA / ES / EN).",
+
+ s5_t:"5. Teaching programme",
+ s5_p1:"This is the official document. Once generated, open it with a double click and you'll see 10 empty sections:",
+ s5_s1:"Identification data", s5_s2:"Competences and learning outcomes",
+ s5_s3:"Course approach", s5_s4:"Core project and products",
+ s5_s5:"Contents and sessions", s5_s6:"Schedule", s5_s7:"Methodology",
+ s5_s8:"Assessment", s5_s9:"Bibliography and resources", s5_s10:"Annexes and worksheets",
+ s5_edit:"How to edit it",
+ s5_e1:"Press ✏️ Edit in the top bar.",
+ s5_e2:"Click any section and type directly.",
+ s5_e3:"You can paste formatted text (tables, lists, links).",
+ s5_e4:"Press 💾 Save to store the changes in the browser.",
+ s5_e5:"Press ✅ Finish to leave edit mode.",
+ s5_b_title:"✏️ Visual guide",
+ s5_b_txt:"Empty sections show a yellow message \"Click ✏️ Edit to modify…\". Once edited, the message disappears and a green edited tag appears.",
+ s5_bt:"Programme buttons",
+ s5_bt_th1:"Button", s5_bt_th2:"What it does",
+ s5_bt_b1:"Export", s5_bt_b1d:"Downloads a JSON with your edits. Useful for backups or sharing with a colleague.",
+ s5_bt_b2:"Import", s5_bt_b2d:"Loads a previously exported edits JSON.",
+ s5_bt_b3:"Reset", s5_bt_b3d:"Deletes all edits and returns to the 10 empty sections.",
+ s5_bt_b4:"Print", s5_bt_b4d:"Opens the browser print dialog (can be saved as PDF).",
+
+ s6_t:"6. Session planner",
+ s6_p1:"This is the teacher's daily work tool. Each session is a card that can be opened and closed by clicking on it.",
+ s6_c:"What each session can contain",
+ s6_c_th1:"Field", s6_c_th2:"Description",
+ s6_c1:"Date and topic", s6_c1d:"Session date and topic title.",
+ s6_c2:"Objectives", s6_c2d:"What must be achieved. Visible to students (can be hidden).",
+ s6_c3:"Activities", s6_c3d:"Each activity has: description, time, type (theory/practice/assessment…) and status (planned/done/paused/discarded).",
+ s6_c4:"Resources", s6_c4d:"Online links. Links appear as clickable cards.",
+ s6_c5:"Audiovisual media", s6_c5d:"Videos, slides, audio… with optional link.",
+ s6_c6:"Complementary work", s6_c6d:"What students must do outside the classroom.",
+ s6_c7:"Evidence", s6_c7d:"What will be collected as learning evidence.",
+ s6_v:"Visible / hidden buttons",
+ s6_v_p:"Each block has a 👁 Visible checkbox. If you uncheck it, that content won't be exported to students (it stays as a teacher's internal note).",
+ s6_bt:"Top bar buttons",
+ s6_bt_th1:"Button", s6_bt_th2:"What it does",
+ s6_bt_b1:"Student sheet", s6_bt_b1d:"Opens the student sheet in a new tab.",
+ s6_bt_b2:"Session", s6_bt_b2d:"Adds a new session.",
+ s6_bt_b3:"Export for students", s6_bt_b3d:"Generates the JSON students will import into their sheet.",
+ s6_bt_b4:"Export", s6_bt_b4d:"Full planner backup (to restore later).",
+ s6_bt_b5:"Import", s6_bt_b5d:"Loads a planner backup.",
+ s6_bt_b6:"Print", s6_bt_b6d:"Printable view (all sessions open).",
+ s6_bt_b7:"Status filter", s6_bt_b7d:"Shows only planned/done/paused/discarded activities.",
+ s6_h:"In each session header",
+ s6_h_th1:"Icon", s6_h_th2:"What it does",
+ s6_h1d:"Moves the session up or down.",
+ s6_h2d:"Deletes the session. Requires 2 clicks to confirm.",
+
+ s7_t:"7. Student sheet",
+ s7_p1:"This is the tool students receive. It works as a digital tracking notebook: mark each activity's status and generate a report for the teacher.",
+ s7_com:"How it works",
+ s7_l1:"The student opens the sheet.",
+ s7_l2:"Fills in personal data (name, email, year).",
+ s7_l3:"Presses Import programme and selects the JSON sent by the teacher.",
+ s7_l4:"Chooses the session from the dropdown list.",
+ s7_l5:"Marks each activity's status: Done / Pending / Not done.",
+ s7_l6:"Can write observations on each activity and on the session.",
+ s7_l7:"Presses Send to generate a delivery JSON for the teacher.",
+ s7_b_title:"💡 Automatic",
+ s7_b_txt:"Everything the student writes is saved automatically in their browser. They can close the sheet and come back later: everything will be there.",
+ s7_bt:"Sheet buttons",
+ s7_bt_th1:"Button", s7_bt_th2:"What it does",
+ s7_bt_b1:"Save", s7_bt_b1d:"Forces immediate save (usually automatic).",
+ s7_bt_b2:"Print PDF", s7_bt_b2d:"Generates a PDF with the whole sheet (useful for filing).",
+ s7_bt_b3:"Send", s7_bt_b3d:"Creates a delivery JSON the student sends to the teacher.",
+ s7_bt_b4:"Import programme", s7_bt_b4d:"Loads the teacher's JSON (or a backup).",
+ s7_bt_b5:"Backup", s7_bt_b5d:"Downloads a JSON with all the student's progress.",
+ s7_bt_b6:"Reset", s7_bt_b6d:"Clears all progress (with confirmation).",
+
+ s8_t:"8. Language switch",
+ s8_p1:"All files (generator, programme, planner, sheet) have a language selector in the top bar: CA · ES · EN.",
+ s8_ok_title:"✅ What changes",
+ s8_ok_txt:"Section titles, form labels, buttons and menus, system messages (toasts), placeholders (grey text inside empty fields).",
+ s8_warn_title:"⚠️ What does NOT change",
+ s8_warn_txt:"The content you wrote yourself (session text, objectives, activities, observations…) is never translated. It stays exactly as you wrote it, in whatever language.",
+ s8_p2:"This is intentional: the language switch adapts the interface, not the pedagogical content (which you may want to keep in one language).",
+
+ s9_t:"9. Where data is stored",
+ s9_p1:"All files store data in the browser's localStorage, identified by a unique key per subject. This means:",
+ s9_l1:"Data is local: nothing is sent to any server.",
+ s9_l2:"If you change computer, data doesn't follow automatically.",
+ s9_l3:"If you clear the browser data, edits are lost.",
+ s9_l4:"Several subjects coexist without clashing (different keys).",
+ s9_warn_title:"⚠️ Important",
+ s9_warn_txt:"Make regular backups (see section 10). The browser may clear data if you empty the cache or change device.",
+ s9_keys:"Internal keys",
+ s9_keys_th1:"File", s9_keys_th2:"localStorage key",
+ s9_k0:"Generator", s9_k1:"Programme", s9_k2:"Planner", s9_k3:"Student sheet",
+ s9_note:"Where NOMCURT is the subject short name (no spaces or accents).",
+
+ s10_t:"10. Backups",
+ s10_p1:"Since data lives in the browser, you need to export it regularly so you don't lose it.",
+ s10_th1:"Tool", s10_th2:"How to back up", s10_th3:"How to restore",
+ s10_r1c1:"Generator", s10_r1c2:"Button 💾 Export config", s10_r1c3:"Button 📤 Import config",
+ s10_r2c1:"Programme", s10_r2c2:"Button ⬇ Export", s10_r2c3:"Button ⬆ Import",
+ s10_r3c1:"Planner", s10_r3c2:"Button Export", s10_r3c3:"Button Import",
+ s10_r4c1:"Student sheet", s10_r4c2:"Button Backup", s10_r4c3:"Button Import programme (auto-detects type)",
+ s10_b_title:"📅 Recommendation",
+ s10_b_txt:"Back up the planner and the programme once a week and at the end of each term. Store the JSON files in the cloud (Drive, Dropbox, OneDrive…).",
+
+ s11_t:"11. Practical tips",
+ s11_h1:"Folder organisation",
+ s11_p1:"Create a folder per subject with this structure:",
+ s11_h2:"Teamwork",
+ s11_e1:"Share planificador_NOM.html with department colleagues.",
+ s11_e2:"Each teacher has their own local data, but they share the same form.",
+ s11_e3:"Export the planner to exchange sessions between colleagues.",
+ s11_h3:"Students",
+ s11_a1:"Send the programme JSON at the start of the course.",
+ s11_a2:"Each student imports it once into their sheet.",
+ s11_a3:"At the end of each session, each student marks their progress.",
+ s11_a4:"Weekly, each student sends you the delivery JSON.",
+ s11_h4:"Printing",
+ s11_i1:"The programme and the planner have optimised print styles.",
+ s11_i2:"Press Print and choose \"Save as PDF\" to get a copy.",
+ s11_i3:"Buttons and menus do not appear in the printout.",
+
+ s12_t:"12. FAQ",
+ s12_q1:"Can I use the files without Internet?", s12_a1:"Yes. The 3 files are self-contained HTML. They work with a double click from the desktop, offline.",
+ s12_q2:"What happens if I change computer?", s12_a2:"Your data stays on the old computer. You need to export backups (JSON) and import them on the new computer.",
+ s12_q3:"Can I have several subjects at once?", s12_a3:"Yes. Each subject generates its own files and uses different localStorage keys. They don't clash.",
+ s12_q4:"Can I recover a previous version?", s12_a4:"The planner and the programme keep versions in the browser, but the most reliable system is to import a JSON backup.",
+ s12_q5:"Why doesn't the language switch translate my content?", s12_a5:"Because the content is yours and you may want it in a specific language. The selector only affects interface labels.",
+ s12_q6:"Can students see what I wrote?", s12_a6:"Only what you export with the Export for students button in the planner. Anything marked as not visible (👁 off) won't be exported.",
+ s12_q7:"Can I use the files on a tablet or phone?", s12_a7:"The files are responsive and work, but they're designed for desktop. For long content, a computer is better.",
+ s12_q8:"How many sessions can the planner hold?", s12_a8:"There's no practical limit. Performance may drop at 100+ sessions with many activities, but that's hard to reach.",
+ s12_q9:"What is the \"short name\" and why does it matter?", s12_a9:"It's an identifier with no spaces or accents (e.g. physiology). It's used for file names and internal keys. If it changes, new files won't find old data.",
+ s12_q10:"Can the HTML files be edited by hand?", s12_a10:"Yes, but it's not recommended: you'd break the structure and internal scripts. Always use the interface buttons.",
+ s12_q11:"How do I share one session with a colleague?", s12_a11:"Export the planner, open the JSON with a text editor and copy only the part of the session you want to share. The colleague imports it into their own planner.",
+
+ footer1:"📖 User manual · Teaching Tools Generator",
+ footer2:"Open source · Made for teachers who want simple, powerful tools"
+}
+};
+
+function aplicarIdioma(lang){
+  localStorage.setItem('manual_lang', lang);
+  document.documentElement.lang = lang;
+  const dic = DIC[lang] || DIC.ca;
+
+  // Títol del document
+  if(dic.titol) document.title = dic.titol;
+
+  // Tots els elements amb data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(dic[k] !== undefined){
+      // Respectar els <code> interns: si el text conté <code>, fer servir innerHTML
+      if(/<\/?code>|<\/?strong>|<\/?b>|<\/?i>|<\/?a /.test(dic[k])){
+        el.innerHTML = dic[k];
+      }else{
+        el.textContent = dic[k];
+      }
+    }
+  });
+
+  // Botons d'idioma
+  document.querySelectorAll('#langBox button').forEach(b=>{
+    b.classList.toggle('on', b.dataset.lang === lang);
+  });
+}
+
+document.querySelectorAll('#langBox button').forEach(b=>{
+  b.addEventListener('click', ()=> aplicarIdioma(b.dataset.lang));
+});
+
+/* ==========================================
+   NAVEGACIÓ ACTIVA
+   ========================================== */
+const sections = document.querySelectorAll('section.card');
+const navLinks = document.querySelectorAll('nav a');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+entry.target.id));
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s=>observer.observe(s));
+
+/* Scroll suau */
+document.querySelectorAll('nav a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
+
+/* Inici */
+aplicarIdioma(localStorage.getItem('manual_lang') || 'ca');
+</script>
+
+</body>
+</html>
